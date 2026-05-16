@@ -20,10 +20,9 @@ const Categories = () => {
     const DEFAULT_PREVIEW_COUNT = 3;
 
     useEffect(() => {
-        if (!user?.email) return;
-
-        const fetchExpense = axios.get(`http://localhost:5000/categories?email=${user.email}&type=expense`);
-        const fetchIncome = axios.get(`http://localhost:5000/categories?email=${user.email}&type=income`);
+        const queryEmail = user?.email ? `&email=${user.email}` : '';
+        const fetchExpense = axios.get(`http://localhost:5000/categories?type=expense${queryEmail}`);
+        const fetchIncome = axios.get(`http://localhost:5000/categories?type=income${queryEmail}`);
 
         Promise.all([fetchExpense, fetchIncome])
             .then(([expenseRes, incomeRes]) => {
@@ -50,6 +49,11 @@ const Categories = () => {
 
     const handleAddCategory = (e) => {
         e.preventDefault();
+
+        if (!user?.email) {
+            toast.error('Login first to add categories');
+            return;
+        }
 
         const name = categoryName.trim();
         if (!name) return;
@@ -195,13 +199,20 @@ const Categories = () => {
                                 onChange={(e) => setCategoryName(e.target.value)}
                                 placeholder={activeTab === 'expense' ? 'Example: Groceries' : 'Example: Freelance'}
                                 className="input input-bordered w-full bg-base-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                                disabled={!user}
                             />
                             <button
                                 type="submit"
-                                className="btn bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-none hover:scale-[1.01] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                                disabled={!user}
+                                className={`btn bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-none hover:scale-[1.01] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${!user ? 'opacity-60 cursor-not-allowed' : ''}`}
                             >
                                 Add Category
                             </button>
+                            {!user && (
+                                <p className="text-xs text-base-content/50">
+                                    Login to add custom categories.
+                                </p>
+                            )}
                         </form>
                     </div>
 

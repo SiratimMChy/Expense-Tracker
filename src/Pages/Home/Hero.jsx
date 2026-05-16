@@ -1,15 +1,33 @@
 import { Link } from 'react-router';
 import { TrendingUp, ArrowRight } from 'lucide-react';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../Provider/AuthProvider';
+import axios from 'axios';
 
-const stats = [
-    { label: 'Active Users', value: '10K+' },
-    { label: 'Expenses Processed', value: '2M+' },
-    { label: 'Budget Categories', value: '50+' },
-];
-
-
+const formatNum = n =>
+    new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n) + '+';
 
 const Hero = () => {
+    const { user } = useContext(AuthContext);
+    const [stats, setStats] = useState([
+        { label: 'Active Users', value: '—' },
+        { label: 'Transactions Logged', value: '—' },
+        { label: 'Custom Categories', value: '—' },
+    ]);
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/stats')
+            .then(res => {
+                const { users, transactions, categories } = res.data;
+                setStats([
+                    { label: 'Active Users', value: formatNum(users) },
+                    { label: 'Transactions Logged', value: formatNum(transactions) },
+                    { label: 'Custom Categories', value: formatNum(categories) },
+                ]);
+            })
+            .catch(err => console.error(err));
+    }, []);
+
     return (
         <section className="relative overflow-hidden bg-base-100 min-h-screen flex flex-col justify-center px-4 py-20 lg:px-10">
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -22,7 +40,7 @@ const Hero = () => {
                 <div className="flex justify-center mb-6">
                     <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-2xl bg-base-200 border border-base-content/10 shadow-sm text-sm font-semibold text-blue-600">
                         <TrendingUp className="w-4 h-4" />
-                       Simple & Secure Finance Tracking
+                        Simple & Secure Finance Tracking
                     </span>
                 </div>
 
@@ -40,14 +58,14 @@ const Hero = () => {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
                     <Link
-                        to="/register"
+                        to={user ? "/about-us" : "/register"}
                         className="btn bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold border-none shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 px-8"
                     >
-                        Get Started
+                        {user ? "Learn More" : "Get Started"}
                         <ArrowRight className="w-4 h-4 ml-1" />
                     </Link>
                     <Link
-                        to="/dashboard"
+                        to="/dashboard/dashboardhome"
                         className="btn btn-outline border-2 border-blue-600 text-blue-600 hover:bg-blue-600/10 hover:border-blue-700 font-semibold transition-all duration-300 px-8"
                     >
                         Explore Dashboard

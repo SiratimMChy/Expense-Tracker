@@ -73,11 +73,6 @@ const Navbar = () => {
                         </li>
 
                         <li>
-                            <NavLink to='/add-transaction' className={mobileNavLinkClass}>
-                                Add Transaction
-                            </NavLink>
-                        </li>
-                        <li>
                             <NavLink to="/dashboard/dashboardhome" className={mobileNavLinkClass}>
                                 Dashboard
                             </NavLink>
@@ -133,10 +128,6 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1 pt-3 space-x-4">
                     <NavLink to="/" className={navLinkClass}>
                         Home
-                    </NavLink>
-
-                    <NavLink to='/add-transaction' className={mobileNavLinkClass}>
-                                Add Transaction
                     </NavLink>
 
                     <NavLink to="/dashboard/dashboardhome" className={navLinkClass}>
@@ -202,15 +193,6 @@ const Navbar = () => {
                                             {user?.email}
                                         </span>
                                     </div>
-                                </li>
-                                <div className="divider my-1"></div>
-                                <li>
-                                    <Link to="/Profile" className="text-base-content hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors duration-200 py-2.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                        <span className="font-semibold">Profile</span>
-                                    </Link>
                                 </li>
                                 <div className="divider my-1"></div>
                                 <li>

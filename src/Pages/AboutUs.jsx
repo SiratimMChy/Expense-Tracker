@@ -49,17 +49,17 @@ const AboutUs = () => {
                         </p>
                     </div>
 
-                    {/* Contact */}
+                    {/* Try Other Features */}
                     <div className="card bg-base-200 border border-base-content/10 shadow-sm p-6">
-                        <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Try Other Features</h2>
                         <p className="text-base-content/70 leading-relaxed mb-4">
-                            Have questions or feedback? We'd love to hear from you.
+                            Explore Cashnivo's full suite of tools to manage your budget, track spending trends, and stay financially organized.
                         </p>
                         <Link
-                            to="/contact"
+                            to="/"
                             className="btn bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-none"
                         >
-                            Contact Us
+                            Explore Features
                         </Link>
                     </div>
                 </div>

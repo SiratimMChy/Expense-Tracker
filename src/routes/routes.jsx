@@ -12,6 +12,8 @@ import DashboadHome from "../Dashboard/DashboardHome/DashboardHome.jsx";
 import Hero from "../Pages/Home/Hero.jsx";
 import Profile from "../Pages/Profile.jsx";
 import DashboardLayout from "../Components/DashboardLayout/DashboardLayout.jsx";
+import Transactions from "../Dashboard/Transactions/Transactions.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <DashboardLayout />,
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
             {
                 path: 'add-transaction',
@@ -71,6 +73,10 @@ const router = createBrowserRouter([
             {
                 path: 'dashboard/categories',
                 element: <Categories />
+            },
+            {
+                path: 'transactions',
+                element: <Transactions />
             },
            
         ]
