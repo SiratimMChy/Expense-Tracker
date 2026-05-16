@@ -9,15 +9,13 @@ const DashboardLayout = () => {
         document.documentElement.setAttribute("data-theme", savedTheme);
     }, []);
 
-
     return (
         <div className="min-h-screen bg-base-200">
-            <div className='flex'>
-
+            <div className="flex">
                 <Aside />
-                <div className='flex-1 p-2 overflow-auto'>
+                <main className="flex-1 min-w-0 overflow-x-hidden">
                     <Outlet />
-                </div>
+                </main>
             </div>
         </div>
     );

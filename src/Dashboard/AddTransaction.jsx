@@ -30,8 +30,6 @@ const AddTransaction = () => {
                 if (!active) return;
                 const data = Array.isArray(res.data) ? res.data : [];
                 setCategories(data);
-
-                // set default category for current type if not set
                 setFormData(prev => ({
                     ...prev,
                     category: prev.category || (data.find(c => c.type === prev.type)?.name || ''),
@@ -89,7 +87,7 @@ const AddTransaction = () => {
         try {
             await axios.post('http://localhost:5000/transactions', transaction);
             toast.success('Transaction saved successfully!');
-            navigate('/deshboard');
+            navigate("/dashboard/dashboardhome");
         } catch (err) {
             console.error(err);
             toast.error('Unable to save transaction.');
@@ -231,7 +229,7 @@ const AddTransaction = () => {
 
                         <div className="pt-4 border-t border-base-300/50 flex flex-col gap-3 sm:flex-row sm:justify-end">
                             <Link
-                                to="/deshboard"
+                                to="/dashboard/dashboardhome"
                                 className="btn btn-outline w-full sm:w-auto"
                             >
                                 Cancel

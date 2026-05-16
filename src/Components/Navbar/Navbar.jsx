@@ -78,7 +78,7 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/dashboard" className={mobileNavLinkClass}>
+                            <NavLink to="/dashboard/dashboardhome" className={mobileNavLinkClass}>
                                 Dashboard
                             </NavLink>
                         </li>
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 Add Transaction
                     </NavLink>
 
-                    <NavLink to="/dashboard" className={navLinkClass}>
+                    <NavLink to="/dashboard/dashboardhome" className={navLinkClass}>
                         Dashboard
                     </NavLink>
 

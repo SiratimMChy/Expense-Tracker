@@ -68,7 +68,11 @@ const router = createBrowserRouter([
                 path: 'dashboardhome',
                 element: <DashboadHome />
             },
-            
+            {
+                path: 'dashboard/categories',
+                element: <Categories />
+            },
+           
         ]
     }
 
