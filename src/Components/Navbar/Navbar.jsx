@@ -83,8 +83,13 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="about-us" className={mobileNavLinkClass}>
+                            <NavLink to="/about-us" className={mobileNavLinkClass}>
                                 About Us
+                            </NavLink>
+                        </li>
+                         <li>
+                            <NavLink to="/contact" className={mobileNavLinkClass}>
+                                Contact Us
                             </NavLink>
                         </li>
                         <li className="block lg:hidden pt-2 border-t border-base-content/10 mt-2">
@@ -138,8 +143,11 @@ const Navbar = () => {
                         Categories
                     </NavLink>
 
-                    <NavLink to="about-us" className={navLinkClass}>
+                    <NavLink to="/about-us" className={navLinkClass}>
                         About Us
+                    </NavLink>
+                    <NavLink to="/contact" className={navLinkClass}>
+                        Contact Us
                     </NavLink>
                 </ul>
             </div>

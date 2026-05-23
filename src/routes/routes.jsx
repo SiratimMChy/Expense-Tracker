@@ -14,11 +14,15 @@ import Profile from "../Pages/Profile.jsx";
 import DashboardLayout from "../Components/DashboardLayout/DashboardLayout.jsx";
 import Transactions from "../Dashboard/Transactions/Transactions.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import ContactUs from "../Pages/ContactUs.jsx";
+import TermsConditions from "../Pages/TermsConditions.jsx";
+import ErrorPage from "../Pages/ErrorPage.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootLayout />,
+        errorElement:<ErrorPage/>,
         children: [
             {
                 path: '/',
@@ -43,6 +47,13 @@ const router = createBrowserRouter([
             {
                 path: '/about-us',
                 element: <AboutUs />
+            },{
+                path: '/contact',
+                element: <ContactUs />
+            },
+            {
+                path: '/terms-conditions',
+                element: <TermsConditions />
             },
             {
                 path: '/footer',
@@ -57,6 +68,7 @@ const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        errorElement:<ErrorPage/>,
         children: [
             {
                 path: 'add-transaction',
@@ -71,7 +83,7 @@ const router = createBrowserRouter([
                 element: <DashboadHome />
             },
             {
-                path: 'dashboard/categories',
+                path: 'categories',
                 element: <Categories />
             },
             {

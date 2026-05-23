@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
-import { updateProfile } from 'firebase/auth';
+import { updateProfile, signOut } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
@@ -59,20 +59,25 @@ const Register = () => {
 
         if (res.data.success === true) {
             createUser(email, password)
-                .then((userCredential) => {
+                .then(() => {
                     updateProfile(auth.currentUser, {
                         displayName: name, photoURL: imageUrl
                     }).then(() => {
-                        setUser(userCredential.user)
-                        axios.post('http://localhost:5000/users', formData)
+                        axios.post('https://cashnivo.vercel.app/users', formData)
                             .then(res => {
                                 console.log(res.data);
                             })
                             .catch(err => {
                                 console.error(err);
                             });
-                        toast.success('Registration successful!');
-                        navigate('/login');
+                        
+                        // Sign out the user after registration
+                        signOut(auth).then(() => {
+                            toast.success('Registration successful! Please login.');
+                            navigate('/login');
+                        }).catch((error) => {
+                            console.log(error);
+                        });
                     }).catch((error) => {
                         console.log(error);
                     });
@@ -97,7 +102,7 @@ const Register = () => {
                 imageUrl: user.photoURL,
             };
 
-            await axios.post('http://localhost:5000/users', userData);
+            await axios.post('https://cashnivo.vercel.app/users', userData);
 
             setUser(user);
 
@@ -110,7 +115,7 @@ const Register = () => {
         }
     };
     return (
-        <div className='flex items-center justify-center min-h-screen px-4 py-8 bg-linear-to-br from-blue-50 via-cyan-50 to-purple-50'>
+        <div className='flex items-center justify-center min-h-screen px-4 py-8 bg-base-100'>
             <title>Registration</title>
 
             <div className="w-full max-w-md -mt-5">

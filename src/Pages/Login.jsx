@@ -44,7 +44,7 @@ const Login = () => {
                 email: user.email,
                 imageUrl: user.photoURL,
             };
-            await axios.post('http://localhost:5000/users', userData);
+            await axios.post('https://cashnivo.vercel.app/users', userData);
 
             setUser(user);
 
@@ -69,7 +69,7 @@ const Login = () => {
     }
 
     return (
-        <div className='flex items-center justify-center min-h-screen px-4 py-8 bg-linear-to-br from-blue-50 via-cyan-50 to-purple-50'>
+        <div className='flex items-center justify-center min-h-screen px-4 py-8 bg-base-100'>
             <title>Login</title>
 
             <div className="w-full max-w-md -mt-20">
