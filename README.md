@@ -63,16 +63,21 @@
 
 ## ✨ Key Features
 
-### 🏠 Dashboard Overview
-- **Financial Summary Cards**: View current balance, total income, total expenses, and savings rate at a glance
-- **Financial Overview Pie Chart**: Current month Income vs. Expense visualization with percentage breakdown
-- **Expense Breakdown by Category**: Interactive bar chart showing category-wise expense trends (last 2 months)
-  - Desktop: Vertical bars with optimized spacing
-  - Mobile: Horizontal bars for better readability
-- **Transaction Summary**: Quick stats on total transactions, income entries, and expense entries
-- **Visual Analytics**: Income vs. Expense comparison with progress bars
-- **Recent Transactions**: Quick access to your latest financial activities
-- **Quick Actions**: Fast navigation to add transactions or manage categories
+### 🏠 User Dashboard & Landing Preview Overview
+
+#### 👤 Authenticated User Dashboard
+- **Financial Summary Cards**: View current balance, total income, total expenses, and savings rate at a glance.
+- **Income vs Expense Chart (last 3 months)**: Interactive `BarChart` comparing monthly income against expenses.
+- **Expense Breakdown Chart**: Interactive `PieChart` showing a breakdown of expenses by category.
+- **Recent Transactions**: Scrollable, responsive list of the latest financial transactions.
+- **Insights & Quick Actions**: Smart automated feedback (e.g., daily average expenses, savings messages) and navigation shortcuts to add transactions or manage categories.
+
+#### 📈 Landing Page Dashboard Preview
+- **Financial Overview Pie Chart**: Current month Income vs. Expense visualization with percentage breakdown.
+- **Expense Breakdown by Category Bar Chart**: Displays category-wise expense trends for the last 2 months:
+  - **Desktop**: Vertical bars with optimized spacing.
+  - **Mobile**: Horizontal bars for better readability.
+- **Transaction Summary Card**: Displays quick stats (Total Transactions, Income Entries, Expense Entries) with calculated average values.
 
 ### 💳 Transaction Management
 - **Add Transactions**: Record income and expenses with amount, date, category, and description
@@ -123,7 +128,7 @@
 ### Backend & Services
 - **[Firebase 12.13.0](https://firebase.google.com/)** - Authentication and hosting
 - **[Axios 1.16.0](https://axios-http.com/)** - HTTP client for API requests
-- **Custom REST API** - Backend API hosted at `cashnivo.vercel.app`
+- **Custom REST API** - REST API backend endpoints for transaction, category, and user management
 
 ### UI Components & Icons
 - **[Lucide React 1.14.0](https://lucide.dev/)** - Beautiful, consistent icons
@@ -161,13 +166,13 @@ Cashnivo follows a **Component-Based Architecture** with clear separation of con
 │  (Context API - AuthProvider, Local State)                  │
 ├─────────────────────────────────────────────────────────────┤
 │                    Business Logic Layer                       │
-│  (Custom Hooks, Utilities, Data Processing)                 │
+│  (Utilities, Data Calculations & Aggregations)              │
 ├─────────────────────────────────────────────────────────────┤
 │                    API Integration Layer                      │
-│  (Axios HTTP Client, Firebase Auth)                         │
+│  (Axios Client, Firebase Auth SDK)                          │
 ├─────────────────────────────────────────────────────────────┤
 │                    External Services                          │
-│  (Firebase Authentication, Vercel API, Cloud Storage)       │
+│  (Firebase Authentication, REST API, ImgBB)                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -202,12 +207,12 @@ User Action → Component State Update → Re-render → UI Update
 ```
 
 #### 3. **Business Logic Layer**
-Contains application logic and data processing:
+Contains application logic and data processing integrated within page layouts and providers:
 
-- **Data Calculations**: Financial summaries, category breakdowns, insights
-- **Formatting Utilities**: Currency formatting, date formatting
-- **Data Aggregation**: Monthly data compilation, category statistics
-- **Validation**: Form validation, data integrity checks
+- **Data Calculations**: Financial summaries, category breakdowns, insights calculations (daily averages, top categories) processed inside page components.
+- **Formatting Utilities**: Internationalization formatting for currencies (`Intl.NumberFormat`) and dates.
+- **Data Aggregation**: Monthly data aggregation for Recharts components.
+- **Validation**: Form validation (e.g., transaction input forms) and data integrity checks.
 
 **Example Logic:**
 ```javascript
@@ -221,12 +226,11 @@ const stats = transactions.reduce((acc, t) => {
 ```
 
 #### 4. **API Integration Layer**
-Handles all external API communication:
+Handles external API communication directly within components:
 
-- **Axios Instance**: Configured HTTP client for REST API calls
-- **Firebase SDK**: Authentication and user management
-- **Error Handling**: Centralized error handling and user feedback
-- **Request/Response Interceptors**: Data transformation and validation
+- **Axios HTTP Client**: Used directly inside page/dashboard components with REST API endpoints.
+- **Firebase SDK**: Authentication and user state subscriptions.
+- **Error Handling & Feedback**: Toast notifications (`react-toastify`) and modals (`sweetalert2`) for graceful UX updates.
 
 **API Endpoints:**
 - Transactions: CRUD operations
@@ -234,12 +238,13 @@ Handles all external API communication:
 - Users: Profile and role information
 
 #### 5. **External Services**
-Third-party services integrated into the application:
+Third-party and backend services integrated into the application:
 
 - **Firebase Authentication**: User registration, login, password recovery
 - **Firebase Hosting**: Application deployment and CDN
-- **Vercel API**: Backend API for transactions and categories
+- **Custom REST API**: Backend API hosting transactions and category data
 - **Google OAuth**: Social authentication
+- **ImgBB API**: Image hosting service for custom user avatars
 
 ### Data Flow Architecture
 
@@ -330,13 +335,8 @@ Used for global state management (authentication):
 const { user } = useContext(AuthContext);
 ```
 
-#### 2. **Custom Hooks Pattern**
-Encapsulates reusable logic:
-```javascript
-const useTransactions = () => {
-  // Transaction fetching and management logic
-};
-```
+#### 2. **Context Provider Pattern**
+Encapsulates global authentication states and methods, exposing them via `AuthContext.Provider` for direct consumption using standard React `useContext(AuthContext)` syntax.
 
 #### 3. **Compound Components Pattern**
 Dashboard components work together:
@@ -503,7 +503,7 @@ Before you begin, ensure you have the following installed:
 - **`/dashboard/add-transaction`** - Add new income or expense
 - **`/dashboard/transactions`** - View and manage all transactions with pagination
 - **`/dashboard/categories`** - Manage income and expense categories
-- **`/dashboard/profile`** - User profile management
+- **`/dashboard/Profile`** - User profile management
 - **`/about-us`** - About the application
 - **`/contact`** - Contact information
 - **`/terms-conditions`** - Terms and conditions
@@ -579,7 +579,7 @@ cashnivo/
 
 ## 🔌 API Integration
 
-Cashnivo integrates with a custom REST API hosted at `https://cashnivo.vercel.app`. The API provides endpoints for:
+Cashnivo integrates with a custom REST API hosted at your server domain (e.g. `https://api.yourdomain.com`) as well as third-party services. The API provides endpoints for:
 
 ### Transactions
 - `GET /transactions?email={userEmail}` - Fetch all transactions for a user
@@ -588,14 +588,22 @@ Cashnivo integrates with a custom REST API hosted at `https://cashnivo.vercel.ap
 - `DELETE /transactions/{id}` - Delete a transaction
 
 ### Categories
-- `GET /categories?email={userEmail}` - Fetch all categories for a user
-- `GET /categories?type={income|expense}&email={userEmail}` - Fetch categories by type
-- `POST /categories` - Create a new category
-- `PUT /categories/{id}` - Update a category
-- `DELETE /categories/{id}` - Delete a category
+- `GET /categories?email={userEmail}` - Fetch all categories for a user (returns default + user custom categories)
+- `GET /categories?type={income|expense}&email={userEmail}` - Fetch categories by type for a user
+- `POST /categories` - Create a new custom category
+- `PUT /categories/{id}` - Update a custom category name
+- `DELETE /categories/{id}` - Delete a custom category
 
 ### Users
+- `POST /users` - Saves or updates user registration details
+- `PUT /users/{email}` - Updates user profile details (displayName, photoURL)
 - `GET /users/role/{email}` - Fetch user role information
+
+### Analytics & System Stats
+- `GET /stats` - Fetch overall stats (total transactions, users count, active entries) used in landing page Hero section
+
+### Third-Party Services
+- **ImgBB API** (`https://api.imgbb.com`): Used in the user profile component to upload custom user avatar images.
 
 ### Request/Response Format
 
