@@ -8,7 +8,6 @@ import {  MdDashboard, MdOutlineAddCircle } from 'react-icons/md';
 import logo from '../../assets/logo.png';
 import { PiUserCircleGearFill } from "react-icons/pi";
 import { SiMoneygram } from 'react-icons/si';
-import { TbHomeFilled } from "react-icons/tb";
 
 const Aside = () => {
     const navigate = useNavigate();
@@ -20,7 +19,6 @@ const Aside = () => {
     };
 
     const navLinks = [
-        { to: '/', end: true, icon: <TbHomeFilled className="w-5 h-5" />, label: 'Home' },
         { to: '/dashboard/dashboardhome', end: true, icon:<MdDashboard className="w-5 h-5" />, label: 'Dashboard' },
         { to: '/dashboard/add-transaction', icon: <MdOutlineAddCircle className="w-5 h-5" />, label: 'Add Transaction' },
         { to: '/dashboard/Profile', icon: <PiUserCircleGearFill className="w-5 h-5" />, label: 'Profile' },
@@ -79,10 +77,9 @@ const Aside = () => {
         </aside>
     );
 
-    // ── Mobile: icon-only bar + overlay drawer ───────────────────────────
+   
     const mobileSidebar = (
         <>
-            {/* Thin icon-only bar — always visible on mobile */}
             <aside className="md:hidden h-screen sticky top-0 w-14 bg-base-100 border-r border-base-content/10 flex flex-col shadow-sm z-40 shrink-0">
                 <Link to="/" className="flex items-center justify-center pt-10 pb-5 border-b border-base-content/10 hover:opacity-90 transition-opacity">
                     <img src={logo} alt="Logo" className="w-8 h-8" />
@@ -123,10 +120,10 @@ const Aside = () => {
                 </div>
             </aside>
 
-            {/* Overlay drawer */}
+  
             {isOpen && (
                 <>
-                    {/* Backdrop */}
+                
                     <div
                         className="md:hidden fixed inset-0 bg-black/40 z-50"
                         onClick={() => setIsOpen(false)}
