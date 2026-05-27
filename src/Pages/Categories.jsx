@@ -154,7 +154,7 @@ const Categories = () => {
                         <p className="text-sm uppercase tracking-[0.2em] font-extrabold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                             Cashnivo
                         </p>
-                        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900">
+                        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">
                             Manage Categories
                         </h1>
                         <p className="mt-2 text-base-content/70 max-w-2xl">

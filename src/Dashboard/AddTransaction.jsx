@@ -121,7 +121,7 @@ const AddTransaction = () => {
                         <p className="text-sm uppercase tracking-[0.2em] font-extrabold text-blue-600">
                             Cashnivo
                         </p>
-                        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900">
+                        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">
                             Add Transaction
                         </h1>
                         <p className="text-base-content/70 mt-2">
