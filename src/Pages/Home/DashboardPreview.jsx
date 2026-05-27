@@ -3,7 +3,7 @@ import { AuthContext } from '../../Provider/AuthProvider';
 import axios from 'axios';
 import { TrendingUp, TrendingDown, Wallet, Target, ArrowUpRight, Zap } from 'lucide-react';
 import { Link } from 'react-router';
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, BarChart, Bar } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, BarChart, Bar, AreaChart, Area } from 'recharts';
 
 const DashboardPreview = () => {
     const { user } = useContext(AuthContext);
@@ -57,10 +57,10 @@ const DashboardPreview = () => {
                 cms.balance = cms.totalIncome - cms.totalExpense;
                 setCurrentMonthStats(cms);
 
-                // Monthly data (last 2 months)
+                // Monthly data (last 3 months)
                 const monthArray = [];
                 
-                for (let i = 1; i >= 0; i--) {
+                for (let i = 2; i >= 0; i--) {
                     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
                     const monthStr = date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
                     monthArray.push({ month: monthStr, income: 0, expense: 0, monthNum: date.getMonth(), yearNum: date.getFullYear() });
@@ -178,32 +178,45 @@ const DashboardPreview = () => {
                 <div className="card bg-base-200 dark:bg-base-200/50 border border-base-content/10 dark:border-base-content/20 shadow-sm p-8 mb-8 rounded-2xl">
                     <div className="mb-8">
                         <h3 className="text-2xl font-bold text-base-content dark:text-base-content/90">Financial Overview</h3>
-                        <p className="text-sm text-base-content/60 dark:text-base-content/50 mt-2">Current Month - Income, Expense & Savings Rate</p>
+                        <p className="text-sm text-base-content/60 dark:text-base-content/50 mt-2">Last 3 Months - Income & Expense Trends</p>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Pie Chart */}
+                        {/* Stacked Area Chart */}
                         <div className="flex items-center justify-center">
-                            {currentMonthStats && (currentMonthStats.totalIncome > 0 || currentMonthStats.totalExpense > 0) ? (
+                            {monthlyData.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
-                                    <PieChart>
-                                        <Pie
-                                            data={[
-                                                { name: 'Income', value: currentMonthStats.totalIncome || 0, fill: '#10b981' },
-                                                { name: 'Expense', value: currentMonthStats.totalExpense || 0, fill: '#ef4444' }
-                                            ]}
-                                            cx="50%"
-                                            cy="50%"
-                                            labelLine={false}
-                                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                                            outerRadius={100}
-                                            dataKey="value"
+                                    <AreaChart data={monthlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorIncomePrev" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+                                                <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                                            </linearGradient>
+                                            <linearGradient id="colorExpensePrev" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                                                <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
+                                        <XAxis dataKey="month" stroke="rgba(0,0,0,0.6)" style={{ fontSize: '12px' }} />
+                                        <YAxis stroke="rgba(0,0,0,0.6)" style={{ fontSize: '12px' }} />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                color: '#fff',
+                                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                                            }}
+                                            formatter={(value) => fmt(value)}
                                         />
-                                        <Tooltip formatter={(value) => fmt(value)} />
-                                    </PieChart>
+                                        <Legend wrapperStyle={{ paddingTop: '16px' }} />
+                                        <Area type="monotone" dataKey="income" stackId="1" stroke="#22c55e" fill="url(#colorIncomePrev)" />
+                                        <Area type="monotone" dataKey="expense" stackId="1" stroke="#ef4444" fill="url(#colorExpensePrev)" />
+                                    </AreaChart>
                                 </ResponsiveContainer>
                             ) : (
                                 <div className="flex items-center justify-center h-80 text-base-content/50">
-                                    <p>No data available for current month</p>
+                                    <p>No data available for last 3 months</p>
                                 </div>
                             )}
                         </div>
@@ -266,7 +279,7 @@ const DashboardPreview = () => {
                         <div className="lg:col-span-2 card bg-base-200 dark:bg-base-200/50 border border-base-content/10 dark:border-base-content/20 shadow-sm p-8 rounded-2xl">
                             <div className="mb-8">
                                 <h3 className="text-2xl font-bold text-base-content dark:text-base-content/90">Expense Breakdown by Category</h3>
-                                <p className="text-sm text-base-content/60 dark:text-base-content/50 mt-2">Last 2 months category trends</p>
+                                <p className="text-sm text-base-content/60 dark:text-base-content/50 mt-2">Last 3 months category trends</p>
                             </div>
                             {Object.keys(categoryExpenseData[0] || {}).filter(key => key !== 'month').length > 0 ? (
                                 <>
@@ -354,7 +367,7 @@ const DashboardPreview = () => {
                                 </>
                             ) : (
                                 <div className="flex items-center justify-center h-80 text-base-content/50 dark:text-base-content/40">
-                                    <p>No expense data available for the last 2 months</p>
+                                    <p>No expense data available for the last 3 months</p>
                                 </div>
                             )}
                         </div>

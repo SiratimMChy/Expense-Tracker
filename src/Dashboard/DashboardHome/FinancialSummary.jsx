@@ -1,5 +1,5 @@
 import { ArrowDownRight, ArrowUpRight, TrendingDown, TrendingUp, Wallet, Target } from "lucide-react";
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useEffect, useState } from "react";
 
 const FinancialSummary = ({ stats, monthlyData, categoryData, fmt }) => {
@@ -12,18 +12,18 @@ const FinancialSummary = ({ stats, monthlyData, categoryData, fmt }) => {
             const theme = document.documentElement.getAttribute('data-theme');
             setIsDark(theme === 'dark');
         };
-        
+
         checkTheme();
-        
+
         // Listen for theme changes
         const observer = new MutationObserver(checkTheme);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-        
+
         return () => observer.disconnect();
     }, []);
 
     // Theme-aware colors - lighter for dark mode, vibrant for light mode
-    const COLORS = isDark 
+    const COLORS = isDark
         ? ['#60a5fa', '#22d3ee', '#4ade80', '#fbbf24', '#f87171', '#a78bfa', '#f472b6', '#2dd4bf']
         : ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
 
@@ -85,24 +85,34 @@ const FinancialSummary = ({ stats, monthlyData, categoryData, fmt }) => {
                     <h3 className="font-bold text-base-content dark:text-base-content/90 mb-4 text-base sm:text-lg">Income vs Expense (3 Months)</h3>
                     {monthlyData.length > 0 ? (
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={monthlyData}>
+                            <AreaChart data={monthlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                <defs>
+                                    <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+                                        <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                                    </linearGradient>
+                                    <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                                    </linearGradient>
+                                </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
                                 <XAxis dataKey="month" stroke="rgba(0,0,0,0.6)" style={{ fontSize: '12px' }} />
                                 <YAxis stroke="rgba(0,0,0,0.6)" style={{ fontSize: '12px' }} />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: 'rgba(0,0,0,0.8)', 
-                                        border: 'none', 
-                                        borderRadius: '8px', 
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '8px',
                                         color: '#fff',
                                         boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                                    }} 
+                                    }}
                                     formatter={(value) => fmt(value)}
                                 />
                                 <Legend wrapperStyle={{ paddingTop: '16px' }} />
-                                <Bar dataKey="income" fill="#10b981" radius={[8, 8, 0, 0]} />
-                                <Bar dataKey="expense" fill="#ef4444" radius={[8, 8, 0, 0]} />
-                            </BarChart>
+                                <Area type="monotone" dataKey="income" stackId="1" stroke="#22c55e" fill="url(#colorIncome)" />
+                                <Area type="monotone" dataKey="expense" stackId="1" stroke="#ef4444" fill="url(#colorExpense)" />
+                            </AreaChart>
                         </ResponsiveContainer>
                     ) : (
                         <div className="h-80 flex items-center justify-center text-base-content/40 dark:text-base-content/50">No data available</div>
