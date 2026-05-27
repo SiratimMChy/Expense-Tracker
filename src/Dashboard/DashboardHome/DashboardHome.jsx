@@ -146,7 +146,7 @@ const DashboardHome = () => {
                     <p className="text-xs sm:text-sm uppercase tracking-[0.2em] font-extrabold bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                         Cashnivo
                     </p>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">Dashboard</h1>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-base-content">Dashboard</h1>
                     <p className="mt-1 text-sm text-base-content/60 dark:text-base-content/50">
                         Welcome back, <span className="font-semibold text-base-content dark:text-base-content/90">{user?.displayName || 'User'}</span>!
                     </p>

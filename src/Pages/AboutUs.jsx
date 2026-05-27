@@ -9,7 +9,7 @@ const AboutUs = () => {
                     <p className="text-sm uppercase tracking-[0.3em] text-blue-600 font-bold">
                         Cashnivo
                     </p>
-                    <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mt-2">
+                    <h1 className="text-4xl lg:text-5xl font-extrabold text-base-content mt-2">
                         About Us
                     </h1>
                     <p className="mt-4 text-base-content/70 max-w-2xl mx-auto">

@@ -120,7 +120,7 @@ const Transactions = () => {
                         <p className="text-xs sm:text-sm uppercase tracking-[0.2em] font-extrabold bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                             Cashnivo
                         </p>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">Transactions</h1>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-base-content">Transactions</h1>
                         <p className="mt-1 text-sm text-base-content/60 dark:text-base-content/50">{transactions.length} total records</p>
                     </div>
 
