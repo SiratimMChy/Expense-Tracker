@@ -737,7 +737,7 @@ Contributions make the open-source community an amazing place to learn, inspire,
 
 <div align="center">
 
-**Made with ❤️ by Siratim Mustakim Chowdhury**
+**Made by Siratim Mustakim Chowdhury**
 
 ⭐ Star this repository if you find it helpful!
 
