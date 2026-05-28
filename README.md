@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Cashnivo Logo](public/logo.png)
+<img src="public/logo.png" alt="Cashnivo Logo" width="200" />
 
 **A modern, intuitive expense tracking application that helps you take control of your finances**
 
