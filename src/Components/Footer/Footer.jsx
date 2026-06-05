@@ -96,7 +96,7 @@ const Footer = () => {
                             className="flex items-center gap-2 text-base-content/80 text-sm font-semibold hover:text-blue-600 transition-colors duration-200"
                         >
                             <MdPhone className="w-5 h-5 shrink-0" />
-                            <span>+880 1777-76677777</span>
+                            <span>+880 1777-000000</span>
                         </a>
                         <div className="flex items-start gap-2 text-base-content/80 text-sm font-semibold hover:text-blue-600 transition-colors duration-200">
                             <MdLocationOn className="w-5 h-5 mt-0.5 shrink-0" />
