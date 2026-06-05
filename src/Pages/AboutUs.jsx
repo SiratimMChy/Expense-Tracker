@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 const AboutUs = () => {
     return (
-        <div className="min-h-screen bg-base-100 px-4 py-8 lg:px-10">
+        <div className="min-h-screen bg-base-100 px-4 py-8 lg:px-10 overflow-x-hidden">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-12 text-center">

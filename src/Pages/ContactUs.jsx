@@ -22,8 +22,8 @@ const ContactUs = () => {
     };
 
     return (
-        <div className="min-h-screen bg-base-100 px-4 py-10 lg:px-30">
-            <div className="w-full mx-auto space-y-10">
+        <div className="min-h-screen bg-base-100 px-4 py-10 lg:px-10 overflow-x-hidden">
+            <div className="max-w-7xl mx-auto space-y-10">
                 <div className="text-center">
                     <p className="text-sm uppercase tracking-[0.3em] text-blue-600 font-bold">
                         Cashnivo
