@@ -710,18 +710,6 @@ Contributions make the open-source community an amazing place to learn, inspire,
 - Keep pull requests focused on a single feature/fix
 
 ---
-
-## 📧 Contact
-
-**Project Maintainer**: Siratim Mustakim Chowdhury
-
-- 📧 Email: [chowdhurysiratimmustakim@gmail.com](mailto:chowdhurysiratimmustakim@gmail.com)
-- 🐙 GitHub: [@SiratimMChy](https://github.com/SiratimMChy)
-- 💼 LinkedIn: [Siratim Mustakim Chowdhury](https://www.linkedin.com/in/siratim-mustakim-chowdhury/)
-
-
----
-
 ## 🙏 Acknowledgments
 
 - [React Documentation](https://react.dev/) - Comprehensive React guides
