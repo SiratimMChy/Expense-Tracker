@@ -4,6 +4,7 @@ import axios from "axios";
 import FinancialSummary from "./FinancialSummary";
 import InsightsActions from "./InsightsActions";
 import RecentTransactions from "./RecentTransactions";
+import { FaStar, FaThumbsUp, FaChartLine } from "react-icons/fa";
 
 const DashboardHome = () => {
     const { user } = useContext(AuthContext);
@@ -96,7 +97,11 @@ const DashboardHome = () => {
                     topCategory: topCat?.name || 'N/A',
                     topCategoryAmount: topCat?.value || 0,
                     avgDailyExpense: avgDaily,
-                    savingsMessage: savingsRate >= 20 ? '💪 Great savings rate!' : savingsRate >= 10 ? '👍 Good progress' : '📈 Keep improving'
+                    savingsMessage: savingsRate >= 20 
+                        ? <span className="flex items-center gap-1 text-yellow-500"><FaStar /> <span className="text-base-content dark:text-base-content/90">Great savings rate!</span></span> 
+                        : savingsRate >= 10 
+                        ? <span className="flex items-center gap-1 text-blue-500"><FaThumbsUp /> <span className="text-base-content dark:text-base-content/90">Good progress</span></span> 
+                        : <span className="flex items-center gap-1 text-green-500"><FaChartLine /> <span className="text-base-content dark:text-base-content/90">Keep improving</span></span>
                 });
             } catch (err) {
                 if (!axios.isCancel(err)) setError('Failed to load data.');

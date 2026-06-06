@@ -35,10 +35,10 @@ const Transactions = () => {
             .finally(() => setLoading(false));
     }, [user?.email]);
 
-    const filtered = transactions.filter(t => filter === 'all' || t.type === filter);
+    const filtered = transactions.filter(t => filter === 'all' || t.type?.toLowerCase() === filter.toLowerCase());
     const totalPages = Math.ceil(filtered.length / itemsPerPage);
     const paginatedData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    const categoryOptions = categories.filter(c => c.type === editingTx?.type).map(c => c.name);
+    const categoryOptions = categories.filter(c => c.type?.toLowerCase() === editingTx?.type?.toLowerCase()).map(c => c.name);
 
     const fmt = amt => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amt);
     const fmtDate = d => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -127,16 +127,16 @@ const Transactions = () => {
                     <div className="flex items-center gap-2 self-start sm:self-auto bg-base-200 dark:bg-base-200/50 border border-base-content/10 dark:border-base-content/20 rounded-xl px-3 py-2">
                         <Filter size={15} className="text-base-content/40 dark:text-base-content/50 shrink-0" />
                         <div className="dropdown dropdown-end">
-                            <button className="bg-transparent text-sm font-medium focus:outline-none text-base-content dark:text-base-content/90 flex items-center gap-1">
+                            <div tabIndex={0} role="button" className="bg-transparent text-sm font-medium focus:outline-none text-base-content dark:text-base-content/90 flex items-center gap-1">
                                 {filter === 'all' ? 'All Records' : filter.charAt(0).toUpperCase() + filter.slice(1)}
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                 </svg>
-                            </button>
-                            <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 rounded-box w-52">
-                                <li><a onClick={() => { setFilter('all'); setCurrentPage(1); }}>All Records</a></li>
-                                <li><a onClick={() => { setFilter('income'); setCurrentPage(1); }}>Income</a></li>
-                                <li><a onClick={() => { setFilter('expense'); setCurrentPage(1); }}>Expense</a></li>
+                            </div>
+                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 rounded-box w-52">
+                                <li><a onClick={() => { setFilter('all'); setCurrentPage(1); document.activeElement?.blur(); }}>All Records</a></li>
+                                <li><a onClick={() => { setFilter('income'); setCurrentPage(1); document.activeElement?.blur(); }}>Income</a></li>
+                                <li><a onClick={() => { setFilter('expense'); setCurrentPage(1); document.activeElement?.blur(); }}>Expense</a></li>
                             </ul>
                         </div>
                     </div>
@@ -181,15 +181,15 @@ const Transactions = () => {
                                             <span className="text-xs text-base-content/30 dark:text-base-content/40 font-semibold">{(currentPage - 1) * itemsPerPage + i + 1}</span>
 
                                             <div className="flex items-center gap-3 min-w-0">
-                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${t.type === 'income' ? 'bg-green-100 dark:bg-green-500/20' : 'bg-red-100 dark:bg-red-500/20'}`}>
-                                                    {t.type === 'income'
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${t.type?.toLowerCase() === 'income' ? 'bg-green-100 dark:bg-green-500/20' : 'bg-red-100 dark:bg-red-500/20'}`}>
+                                                    {t.type?.toLowerCase() === 'income'
                                                         ? <TrendingUp size={14} className="text-green-600" />
                                                         : <TrendingDown size={14} className="text-red-500" />
                                                     }
                                                 </div>
                                                 <div className="min-w-0">
                                                     <p className="text-sm font-semibold text-base-content dark:text-base-content/90 truncate">{t.description || 'No description'}</p>
-                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${t.type === 'income' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'}`}>
+                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${t.type?.toLowerCase() === 'income' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'}`}>
                                                         {t.type}
                                                     </span>
                                                 </div>
@@ -198,8 +198,8 @@ const Transactions = () => {
                                             <span className="text-sm text-base-content/60 dark:text-base-content/50 font-medium truncate">{t.category}</span>
                                             <span className="text-sm text-base-content/50 dark:text-base-content/40">{fmtDate(t.date)}</span>
 
-                                            <span className={`text-right text-sm font-bold ${t.type === 'income' ? 'text-green-600' : 'text-red-500'}`}>
-                                                {t.type === 'income' ? '+' : '-'}{fmt(t.amount)}
+                                            <span className={`text-right text-sm font-bold ${t.type?.toLowerCase() === 'income' ? 'text-green-600' : 'text-red-500'}`}>
+                                                {t.type?.toLowerCase() === 'income' ? '+' : '-'}{fmt(t.amount)}
                                             </span>
 
                                             <div className="flex justify-center gap-1.5">
@@ -231,8 +231,8 @@ const Transactions = () => {
                             <div className="md:hidden space-y-2">
                                 {paginatedData.map((t) => (
                                     <div key={t._id} className="flex items-center gap-2.5 bg-base-100 dark:bg-base-100/50 border border-base-content/5 dark:border-base-content/10 rounded-xl px-3 py-3">
-                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${t.type === 'income' ? 'bg-green-100 dark:bg-green-500/20' : 'bg-red-100 dark:bg-red-500/20'}`}>
-                                            {t.type === 'income'
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${t.type?.toLowerCase() === 'income' ? 'bg-green-100 dark:bg-green-500/20' : 'bg-red-100 dark:bg-red-500/20'}`}>
+                                            {t.type?.toLowerCase() === 'income'
                                                 ? <TrendingUp size={14} className="text-green-600" />
                                                 : <TrendingDown size={14} className="text-red-500" />
                                             }
@@ -244,8 +244,8 @@ const Transactions = () => {
                                         </div>
 
                                         <div className="text-right shrink-0">
-                                            <p className={`text-[13px] font-bold tabular-nums ${t.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-                                                {t.type === 'income' ? '+' : '-'}{fmt(t.amount)}
+                                            <p className={`text-[13px] font-bold tabular-nums ${t.type?.toLowerCase() === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                                                {t.type?.toLowerCase() === 'income' ? '+' : '-'}{fmt(t.amount)}
                                             </p>
                                             <div className="flex justify-end gap-1 mt-1">
                                                 <button
@@ -375,16 +375,16 @@ const Transactions = () => {
                             <div>
                                 <label className="text-sm font-semibold text-base-content dark:text-base-content/90 block mb-1.5">Category</label>
                                 <div className="dropdown w-full">
-                                    <button className="btn btn-outline w-full justify-between bg-base-100 dark:bg-base-100/50 dark:border-base-content/20 dark:text-base-content/90">
+                                    <div tabIndex={0} role="button" className="btn btn-outline w-full justify-between bg-base-100 dark:bg-base-100/50 dark:border-base-content/20 dark:text-base-content/90">
                                         {editingTx.category || 'Select Category'}
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                         </svg>
-                                    </button>
-                                    <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 rounded-box w-full">
+                                    </div>
+                                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 rounded-box w-full">
                                         {categoryOptions.map(cat => (
                                             <li key={cat}>
-                                                <a onClick={() => handleEditChange({ target: { name: 'category', value: cat } })}>
+                                                <a onClick={() => { handleEditChange({ target: { name: 'category', value: cat } }); document.activeElement?.blur(); }}>
                                                     {cat}
                                                 </a>
                                             </li>
