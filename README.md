@@ -199,6 +199,60 @@ Frontend State Updated → Toast Notification Displayed
 
 ---
 
+## 📁 Project Structure
+
+Cashnivo consists of two main directories: `cashnivo-frontend` and `cashnivo-backend`.
+
+```text
+cashnivo/
+├── cashnivo-frontend/           # The primary React + Vite Application
+│   ├── public/                  # Static assets
+│   ├── src/
+│   │   ├── assets/              # Images and icons
+│   │   ├── Components/          # Reusable React components
+│   │   │   ├── Aside/           # Sidebar navigation
+│   │   │   ├── DashboardLayout/ # Dashboard shell wrapper
+│   │   │   ├── Footer/          # Shared site footer
+│   │   │   └── Navbar/          # Top navigation bar
+│   │   ├── Dashboard/           # Protected application modules
+│   │   │   ├── AddTransaction/  # Form for new records
+│   │   │   ├── Categories/      # Category management
+│   │   │   ├── DashboardHome/   # Main overview & charts
+│   │   │   └── Transactions/    # Paginated transaction list
+│   │   ├── Pages/               # Public and Auth pages
+│   │   │   ├── Home/            # Landing page sections
+│   │   │   ├── AboutUs/         # About info
+│   │   │   ├── ContactUs/       # Contact info
+│   │   │   ├── Login/           # Authentication
+│   │   │   └── Register/        # User registration
+│   │   ├── Provider/            # React Context (AuthProvider)
+│   │   ├── firebase/            # Firebase SDK configuration
+│   │   ├── routes/              # Client-side routing logic
+│   │   ├── App.jsx              # Main App wrapper
+│   │   ├── index.css            # Tailwind global styles
+│   │   └── main.jsx             # React entry point
+│   ├── .env.local               # Environment variables
+│   ├── package.json             # Frontend dependencies
+│   ├── tailwind.config.js       # Tailwind configuration
+│   └── vite.config.js           # Vite bundler config
+│
+├── cashnivo-backend/            # Node.js/Express Backend Service
+│   ├── src/
+│   │   ├── routes/              # Express API Routes
+│   │   │   ├── categories.js    # Category CRUD endpoints
+│   │   │   ├── stats.js         # Global platform stats
+│   │   │   ├── transactions.js  # Transaction CRUD endpoints
+│   │   │   └── users.js         # User role and profile management
+│   │   └── index.js             # Express application setup
+│   ├── .env                     # Environment variables
+│   ├── package.json             # Backend dependencies
+│   └── vercel.json              # Vercel deployment config
+│
+└── README.md                    # Project documentation
+```
+
+---
+
 ## 💾 Database Schema
 
 ### Transactions Collection
