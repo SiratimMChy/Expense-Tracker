@@ -272,6 +272,44 @@ Distributed under the **MIT License**.
 
 *Copyright © 2026 Cashnivo. All rights reserved.*
 
+1. **Fork the Project**
+2. **Create your Feature Branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Commit your Changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Push to the Branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Open a Pull Request**
+
+### Contribution Guidelines
+
+- Follow the existing code style and conventions
+- Write clear, descriptive commit messages
+- Update documentation for any new features
+- Add tests for new functionality when applicable
+- Ensure all tests pass before submitting PR
+- Keep pull requests focused on a single feature/fix
+
+---
+## 🙏 Acknowledgments
+
+- [React Documentation](https://react.dev/) - Comprehensive React guides
+- [Vite Documentation](https://vitejs.dev/) - Fast build tool documentation
+- [Firebase Documentation](https://firebase.google.com/docs) - Authentication and hosting
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [DaisyUI](https://daisyui.com/) - Beautiful Tailwind components
+- [Lucide Icons](https://lucide.dev/) - Beautiful icon library
+- [React Router](https://reactrouter.com/) - Client-side routing
+- [Recharts](https://recharts.org/) - Data visualization library
+
+---
+
 <div align="center">
 
 **Made by Siratim Mustakim Chowdhury**
