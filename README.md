@@ -128,39 +128,39 @@ Cashnivo follows a robust **Component-Based Architecture** with a clear separati
 
 ```mermaid
 graph TD
-    subgraph Presentation Layer
+    subgraph PresentationLayer [Presentation Layer]
         UI[React Components]
         Styles[TailwindCSS & DaisyUI]
         Charts[Recharts]
     end
 
-    subgraph State Management
+    subgraph StateManagement [State Management]
         Context[React Context API]
         Hooks[Custom Hooks]
         Local[Local State]
     end
 
-    subgraph Business Logic
+    subgraph BusinessLogic [Business Logic]
         Validation[Form Validation]
         Format[Data Formatting]
         Math[Math Aggregation]
     end
 
-    subgraph API Integration
+    subgraph APIIntegration [API Integration]
         Axios[Axios HTTP Client]
         AuthSDK[Firebase Auth SDK]
     end
 
-    subgraph External Services
+    subgraph ExternalServices [External Services]
         Firebase[Firebase Authentication]
         Backend[REST API]
         ImgBB[ImgBB Cloud]
     end
 
-    Presentation_Layer --> State_Management
-    State_Management --> Business_Logic
-    Business_Logic --> API_Integration
-    API_Integration --> External_Services
+    PresentationLayer --> StateManagement
+    StateManagement --> BusinessLogic
+    BusinessLogic --> APIIntegration
+    APIIntegration --> ExternalServices
     
     UI --> Context
     UI --> Hooks
