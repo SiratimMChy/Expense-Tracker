@@ -122,41 +122,80 @@ Cashnivo streamlines financial tracking:
 
 ## 🏗️ Software Architecture
 
-Cashnivo follows a **Component-Based Architecture** with clear separation of concerns, built on modern React patterns.
+Cashnivo follows a robust **Component-Based Architecture** with a clear separation of concerns, built entirely on modern React patterns.
+
+### Architecture Overview
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    Presentation Layer                        │
+│  (React Components, TailwindCSS, DaisyUI, Recharts)         │
+├─────────────────────────────────────────────────────────────┤
+│                    State Management Layer                     │
+│  (React Context API, Custom Hooks, Local State)             │
+├─────────────────────────────────────────────────────────────┤
+│                    Business Logic Layer                       │
+│  (Data Formatting, Form Validation, Math Aggregation)       │
+├─────────────────────────────────────────────────────────────┤
+│                    API Integration Layer                      │
+│  (Axios HTTP Client, Firebase Auth SDK)                     │
+├─────────────────────────────────────────────────────────────┤
+│                    External Services                          │
+│  (Firebase Authentication, REST API, ImgBB Cloud)           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Component Hierarchy
+
+```text
+App
+├── RootLayout
+│   ├── Navbar
+│   ├── Public Routes (Home, About, Contact, Login, Register)
+│   └── Footer
+└── PrivateRoute (Auth Guard)
+    └── DashboardLayout
+        ├── Aside (Collapsible Sidebar)
+        └── Dashboard Modules
+            ├── DashboardHome (FinancialSummary, RecentTransactions)
+            ├── AddTransaction
+            ├── Transactions (Paginated List)
+            ├── Categories (Default & Custom)
+            └── Profile (Settings & Avatar Upload)
+```
 
 ### Key Data Flows
 
-#### User Authentication Flow
+#### 1. Authentication Lifecycle
 ```text
-User Input (Login / Google SSO)
+[Client] User Input → Firebase Auth → Session Validated
     ↓
-Firebase Authentication Service
+AuthProvider fetches & sets global user state
     ↓
-AuthProvider Context Updates
+PrivateRoute checks session → Blocks unauthenticated users
     ↓
-PrivateRoute Guard validates session
-    ↓
-Dashboard Rendered
+Dashboard components securely rendered
 ```
 
-#### Transaction Flow
+#### 2. Transaction Management Flow
 ```text
-User Submits Transaction Form
+User Submits Form → Client-side Validation
     ↓
-Validation & Formatting
+Axios POST Request → Backend REST API
     ↓
-Axios POST Request to Backend API
+Database Insert → Response returned to Client
     ↓
-Local State Update & Re-render
-    ↓
-Toast Notification Success
+Frontend State Updated → Toast Notification Displayed
 ```
 
 ### Design Patterns Used
-- **Context Provider**: `AuthProvider` manages global auth state
-- **Higher-Order Component**: `PrivateRoute` wraps protected dashboard routes
-- **Compound Components**: Modular dashboard structure (`FinancialSummary` + `RecentTransactions`)
-- **Controlled Components**: Form inputs strictly bound to React state
+
+| Pattern | Implementation |
+|---|---|
+| **Context Provider** | `AuthProvider` encapsulates global authentication states |
+| **Higher-Order Component** | `PrivateRoute` securely wraps and protects dashboard routes |
+| **Compound Components** | Modular dashboard construction (`FinancialSummary` + `RecentTransactions`) |
+| **Controlled Components** | Form inputs strictly bound to React local state (`useState`) |
 
 ---
 
@@ -267,6 +306,8 @@ firebase deploy
 ## 📄 License & Contributions
 
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+This project is open-source and welcoming. Anyone is free to view, explore, and contribute to this repository. However, proper credit and attribution must be given to the original creator.
 
 Distributed under the **MIT License**. 
 
