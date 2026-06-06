@@ -122,80 +122,128 @@ Cashnivo streamlines financial tracking:
 
 ## 🏗️ Software Architecture
 
-Cashnivo follows a robust **Component-Based Architecture** with a clear separation of concerns, built entirely on modern React patterns.
+Cashnivo follows a robust **Component-Based Architecture** with a clear separation of concerns, built entirely on modern React patterns. The architecture is designed for scalability, maintainability, and high performance.
 
 ### Architecture Overview
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    Presentation Layer                        │
-│  (React Components, TailwindCSS, DaisyUI, Recharts)         │
-├─────────────────────────────────────────────────────────────┤
-│                    State Management Layer                     │
-│  (React Context API, Custom Hooks, Local State)             │
-├─────────────────────────────────────────────────────────────┤
-│                    Business Logic Layer                       │
-│  (Data Formatting, Form Validation, Math Aggregation)       │
-├─────────────────────────────────────────────────────────────┤
-│                    API Integration Layer                      │
-│  (Axios HTTP Client, Firebase Auth SDK)                     │
-├─────────────────────────────────────────────────────────────┤
-│                    External Services                          │
-│  (Firebase Authentication, REST API, ImgBB Cloud)           │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph Presentation Layer
+        UI[React Components]
+        Styles[TailwindCSS & DaisyUI]
+        Charts[Recharts]
+    end
+
+    subgraph State Management
+        Context[React Context API]
+        Hooks[Custom Hooks]
+        Local[Local State]
+    end
+
+    subgraph Business Logic
+        Validation[Form Validation]
+        Format[Data Formatting]
+        Math[Math Aggregation]
+    end
+
+    subgraph API Integration
+        Axios[Axios HTTP Client]
+        AuthSDK[Firebase Auth SDK]
+    end
+
+    subgraph External Services
+        Firebase[Firebase Authentication]
+        Backend[REST API]
+        ImgBB[ImgBB Cloud]
+    end
+
+    Presentation_Layer --> State_Management
+    State_Management --> Business_Logic
+    Business_Logic --> API_Integration
+    API_Integration --> External_Services
+    
+    UI --> Context
+    UI --> Hooks
+    Styles -.-> UI
+    Charts -.-> UI
+    Context --> Validation
+    Hooks --> Validation
+    Hooks --> Format
+    Validation --> Axios
+    Validation --> AuthSDK
+    Axios --> Backend
+    AuthSDK --> Firebase
+    UI --> ImgBB
 ```
 
 ### Component Hierarchy
 
-```text
-App
-├── RootLayout
-│   ├── Navbar
-│   ├── Public Routes (Home, About, Contact, Login, Register)
-│   └── Footer
-└── PrivateRoute (Auth Guard)
-    └── DashboardLayout
-        ├── Aside (Collapsible Sidebar)
-        └── Dashboard Modules
-            ├── DashboardHome (FinancialSummary, RecentTransactions)
-            ├── AddTransaction
-            ├── Transactions (Paginated List)
-            ├── Categories (Default & Custom)
-            └── Profile (Settings & Avatar Upload)
+```mermaid
+graph TD
+    App[App Wrapper] --> Router[React Router]
+    Router --> Public[Public Routes]
+    Router --> Private[Private Route Guard]
+    
+    Public --> Home[Home]
+    Public --> Auth[Login / Register]
+    
+    Private --> DashboardLayout[Dashboard Layout]
+    DashboardLayout --> Sidebar[Sidebar / Navbar]
+    DashboardLayout --> DashboardModules[Dashboard Modules]
+    
+    DashboardModules --> DashHome[Dashboard Home]
+    DashboardModules --> AddTrans[Add Transaction]
+    DashboardModules --> TransList[Transactions List]
+    DashboardModules --> Categories[Categories Management]
+    
+    DashHome --> Summary[Financial Summary]
+    DashHome --> Recent[Recent Transactions]
 ```
 
 ### Key Data Flows
 
 #### 1. Authentication Lifecycle
-```text
-[Client] User Input → Firebase Auth → Session Validated
-    ↓
-AuthProvider fetches & sets global user state
-    ↓
-PrivateRoute checks session → Blocks unauthenticated users
-    ↓
-Dashboard components securely rendered
+```mermaid
+sequenceDiagram
+    participant User
+    participant Client
+    participant AuthProvider
+    participant Firebase
+    
+    User->>Client: Enters Credentials
+    Client->>Firebase: Validate via SDK
+    Firebase-->>Client: Session Token
+    Client->>AuthProvider: Update Global State
+    AuthProvider->>Client: Unlock Protected Routes
 ```
 
 #### 2. Transaction Management Flow
-```text
-User Submits Form → Client-side Validation
-    ↓
-Axios POST Request → Backend REST API
-    ↓
-Database Insert → Response returned to Client
-    ↓
-Frontend State Updated → Toast Notification Displayed
+```mermaid
+sequenceDiagram
+    participant User
+    participant Component
+    participant Validation
+    participant API
+    participant Database
+    
+    User->>Component: Submit Transaction Form
+    Component->>Validation: Client-side Check
+    Validation-->>Component: Success
+    Component->>API: Axios POST /transactions
+    API->>Database: Insert Record
+    Database-->>API: 201 Created
+    API-->>Component: Response Data
+    Component->>User: Toast Notification & Update UI
 ```
 
 ### Design Patterns Used
 
-| Pattern | Implementation |
-|---|---|
-| **Context Provider** | `AuthProvider` encapsulates global authentication states |
-| **Higher-Order Component** | `PrivateRoute` securely wraps and protects dashboard routes |
-| **Compound Components** | Modular dashboard construction (`FinancialSummary` + `RecentTransactions`) |
-| **Controlled Components** | Form inputs strictly bound to React local state (`useState`) |
+| Pattern | Implementation | Benefits |
+|---|---|---|
+| **Context Provider** | `AuthProvider` encapsulates global authentication states | Eliminates prop drilling, centralized security |
+| **Higher-Order Component** | `PrivateRoute` securely wraps and protects dashboard routes | Reusable route protection |
+| **Compound Components** | Modular dashboard construction (`FinancialSummary` + `RecentTransactions`) | Improved maintainability and decoupling |
+| **Controlled Components** | Form inputs strictly bound to React local state (`useState`) | Single source of truth for form data |
 
 ---
 
