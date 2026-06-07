@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
 import axios from 'axios';
-import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, Trash2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { GoogleGenAI } from '@google/genai';
 
 const AiChatbot = () => {
     const { user } = useContext(AuthContext);
@@ -45,6 +44,16 @@ const AiChatbot = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    const handleClearChat = () => {
+        const defaultMessage = [{ role: 'model', content: "Hi! I'm your AI Financial Advisor. How can I help you today?" }];
+        setMessages(defaultMessage);
+        
+        if (user?.email) {
+            axios.delete(`https://cashnivo.vercel.app/chats?email=${encodeURIComponent(user.email)}`)
+                .catch(err => console.error("Failed to clear chat history", err));
+        }
+    };
+
     const handleSend = async () => {
         if (!input.trim()) return;
 
@@ -60,9 +69,7 @@ const AiChatbot = () => {
             .catch(err => console.error("Failed to sync user message", err));
 
         try {
-            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-
-            // Format transaction
+            // Format transaction context
             const txContext = transactions.map(t =>
                 `${t.date.split('T')[0]}: ${t.type === 'income' ? '+' : '-'}$${t.amount} for ${t.category} (${t.description || 'no notes'})`
             ).join('\n');
@@ -72,21 +79,30 @@ You are talking to the user.
 Here is the user's recent transaction history:\n${txContext || 'No transactions yet.'}
 Use this data to answer their financial questions, provide insights, and give budgeting advice. Do not mention that you were given this context directly, just use it naturally. Be concise.`;
 
-            const contents = [
-                { role: 'user', parts: [{ text: systemInstruction }] },
-                { role: 'model', parts: [{ text: 'Understood. I will help the user.' }] },
+            // Prepare history for Groq API (OpenAI compatible)
+            const messagesPayload = [
+                { role: 'system', content: systemInstruction },
                 ...newMessagesUser.map(m => ({
-                    role: m.role === 'model' ? 'model' : 'user',
-                    parts: [{ text: m.content }]
+                    role: m.role === 'model' ? 'assistant' : 'user',
+                    content: m.content
                 }))
             ];
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-3.5-flash',
-                contents: contents,
-            });
+            const response = await axios.post(
+                'https://api.groq.com/openai/v1/chat/completions',
+                {
+                    model: 'llama-3.3-70b-versatile',
+                    messages: messagesPayload,
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
 
-            const botText = response.text || "I'm sorry, I couldn't generate a response.";
+            const botText = response.data.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
             const newMessagesBot = [...newMessagesUser, { role: 'model', content: botText }];
             
             setMessages(newMessagesBot);
@@ -96,7 +112,7 @@ Use this data to answer their financial questions, provide insights, and give bu
 
         } catch (error) {
             console.error("AI Chatbot Error:", error);
-            setMessages(prev => [...prev, { role: 'model', content: "Sorry, I encountered an error. Please make sure you have added your VITE_GEMINI_API_KEY in your .env.local file." }]);
+            setMessages(prev => [...prev, { role: 'model', content: "Sorry, I encountered an error. Please make sure you have added your VITE_GROQ_API_KEY in your .env.local file." }]);
         } finally {
             setIsLoading(false);
         }
@@ -113,9 +129,14 @@ Use this data to answer their financial questions, provide insights, and give bu
                             <Bot size={20} />
                             <h3 className="font-bold">AI Financial Advisor</h3>
                         </div>
-                        <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded-lg transition">
-                            <X size={18} />
-                        </button>
+                        <div className="flex items-center gap-1">
+                            <button onClick={handleClearChat} className="hover:bg-white/20 p-1.5 rounded-lg transition" title="Clear History">
+                                <Trash2 size={16} />
+                            </button>
+                            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded-lg transition">
+                                <X size={18} />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Messages */}
