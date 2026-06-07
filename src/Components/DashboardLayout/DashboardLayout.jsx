@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router';
 import Aside from '../Aside/Aside';
+import AiChatbot from '../../Dashboard/AiChatbot/AiChatbot';
 
 const DashboardLayout = () => {
 
@@ -10,13 +11,14 @@ const DashboardLayout = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-base-200">
-            <div className="flex">
+        <div className="min-h-screen bg-base-200 relative">
+            <div className="flex relative z-10">
                 <Aside />
                 <main className="flex-1 min-w-0 overflow-x-hidden">
                     <Outlet />
                 </main>
             </div>
+            <AiChatbot />
         </div>
     );
 };
