@@ -130,7 +130,7 @@ Cashnivo streamlines financial tracking:
 
 ---
 
-## 🏗️ Software Architecture
+## 💻 Software Architecture
 
 Cashnivo follows a robust **Component-Based Architecture** with a clear separation of concerns, built entirely on modern React patterns. The architecture is designed for scalability, maintainability, and high performance.
 
@@ -333,7 +333,7 @@ cashnivo/
 
 ---
 
-## 🔌 API Documentation
+## ⚡ API Documentation
 
 Cashnivo integrates with a custom REST API. All endpoints return JSON responses.
 
@@ -411,7 +411,7 @@ firebase deploy
 
 ---
 
-## 📄 License & Contributions
+## License & Contributions
 
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -446,7 +446,7 @@ Distributed under the **MIT License**.
 - Keep pull requests focused on a single feature/fix
 
 ---
-## 🙏 Acknowledgments
+## ✍️ Acknowledgments
 
 - [React Documentation](https://react.dev/) - Comprehensive React guides
 - [Vite Documentation](https://vitejs.dev/) - Fast build tool documentation
