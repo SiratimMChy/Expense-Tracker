@@ -122,7 +122,7 @@ Use this data to answer their financial questions, provide insights, and give bu
         <div className="fixed bottom-6 right-6 z-50">
             {/* Chat Window */}
             {isOpen && (
-                <div className="absolute bottom-16 right-0 w-[350px] sm:w-[400px] h-[500px] bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 shadow-2xl rounded-2xl flex flex-col overflow-hidden mb-4 animate-in slide-in-from-bottom-2 fade-in duration-200">
+                <div className="absolute bottom-16 right-0 w-[calc(100vw-3rem)] sm:w-[400px] h-[75vh] max-h-[600px] sm:h-[500px] bg-base-100 dark:bg-base-200 border border-base-content/10 dark:border-base-content/20 shadow-2xl rounded-2xl flex flex-col overflow-hidden mb-4 animate-in slide-in-from-bottom-2 fade-in duration-200">
                     {/* Header */}
                     <div className="bg-linear-to-r from-blue-600 to-cyan-600 text-white p-4 flex justify-between items-center shadow-md">
                         <div className="flex items-center gap-2">
