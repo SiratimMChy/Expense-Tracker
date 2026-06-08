@@ -80,6 +80,12 @@ Cashnivo streamlines financial tracking:
 - **Expense Breakdown Chart**: Interactive pie charts showing a clear breakdown of expenses by category
 - **Insights & Quick Actions**: Smart automated feedback (e.g., daily average expenses, savings messages)
 
+### 🤖 AI Financial Advisor
+- **Context-Aware Assistance**: Chat with an AI (Llama 3 via Groq) that understands your transaction history
+- **Smart Recommendations**: Get real-time budgeting advice based on your spending habits
+- **Persistent Chat**: Chat history is saved securely to the cloud and spans across sessions
+- **Full Control**: Option to instantly clear your AI chat history from the UI and database
+
 ### 💳 Complete Transaction Lifecycle
 - **Add Transactions**: Record income and expenses with amount, date, category, and description
 - **Full CRUD Controls**: Edit and delete records with ease
@@ -108,6 +114,9 @@ Cashnivo streamlines financial tracking:
 | **TailwindCSS** | 4.3.0 | Utility-first CSS framework for rapid styling |
 | **DaisyUI** | 5.5.19 | Beautiful accessible component library |
 | **Recharts** | 3.8.1 | Composable charting library for data visualization |
+| **React Markdown**| 10.1.0 | Parses and renders markdown from the AI Chatbot |
+| **SweetAlert2** | 11.26.24 | Beautiful, responsive, customizable popup boxes |
+| **React Toastify**| 11.1.0 | Lightweight toast notifications |
 
 ### Backend & Services
 
@@ -115,6 +124,7 @@ Cashnivo streamlines financial tracking:
 |---------|---------|-------------|
 | **Firebase** | 12.13.0 | Authentication and high-performance hosting |
 | **Axios** | 1.16.0 | Promise-based HTTP client for API requests |
+| **Groq API** | Llama-3 | Ultra-fast AI inference for the financial advisor |
 | **REST API** | Custom | Backend endpoints for data persistence |
 | **ImgBB API** | REST | Cloud storage for user profile avatars |
 
@@ -262,17 +272,23 @@ cashnivo/
 │   │   ├── Footer/          # Shared site footer
 │   │   └── Navbar/          # Top navigation bar
 │   ├── Dashboard/           # Protected application modules
-│   │   ├── AddTransaction/  # Form for new records
-│   │   ├── Categories/      # Category management
+│   │   ├── AiChatbot/       # Groq AI Floating Widget
 │   │   ├── DashboardHome/   # Main overview & charts
-│   │   └── Transactions/    # Paginated transaction list
+│   │   ├── Transactions/    # Paginated transaction list
+│   │   └── AddTransaction.jsx # Form for new records
 │   ├── Pages/               # Public and Auth pages
-│   │   ├── Home/            # Landing page sections
-│   │   ├── AboutUs/         # About info
-│   │   ├── ContactUs/       # Contact info
-│   │   ├── Login/           # Authentication
-│   │   └── Register/        # User registration
+│   │   ├── Home/            # Landing page components
+│   │   ├── AboutUs.jsx      # About info
+│   │   ├── Categories.jsx   # Category management
+│   │   ├── ContactUs.jsx    # Contact info
+│   │   ├── Login.jsx        # Authentication
+│   │   ├── Register.jsx     # User registration
+│   │   ├── Profile.jsx      # User profile management
+│   │   ├── ErrorPage.jsx    # 404 Error page
+│   │   ├── Forgetpassword.jsx # Password recovery
+│   │   └── TermsConditions.jsx # Legal terms page
 │   ├── Provider/            # React Context (AuthProvider)
+│   ├── RootLayout/          # Main application layout wrapper
 │   ├── firebase/            # Firebase SDK configuration
 │   ├── routes/              # Client-side routing logic
 │   ├── App.jsx              # Main App wrapper
@@ -329,6 +345,9 @@ Cashnivo integrates with a custom REST API. All endpoints return JSON responses.
 | `DELETE` | `/transactions/{id}` | Delete a transaction | Yes |
 | `GET` | `/categories?email={email}` | Fetch default + custom user categories | Yes |
 | `POST` | `/categories` | Create a new custom category | Yes |
+| `GET` | `/chats?email={email}` | Fetch AI chat history for a user | Yes |
+| `POST` | `/chats` | Update/Create AI chat history | Yes |
+| `DELETE` | `/chats?email={email}` | Delete AI chat history | Yes |
 | `GET` | `/stats` | Fetch overall global platform stats | No |
 
 ---
@@ -363,6 +382,7 @@ Cashnivo integrates with a custom REST API. All endpoints return JSON responses.
    VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
    VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
    VITE_FIREBASE_APP_ID=your_firebase_app_id
+   VITE_GROQ_API_KEY=your_groq_api_key_here
    ```
 
 4. **Start the development server**
